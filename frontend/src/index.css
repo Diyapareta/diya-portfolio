@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌑 / ☀️ THEME BASE */
+body {
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+body.dark {
+  background: #020617;
+  color: white;
+}
+
+body.light {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* 🌈 Animated Gradient Text */
+.gradient-text {
+  background: linear-gradient(90deg, #60a5fa, #a78bfa, #22d3ee);
+  background-size: 200% auto;
+  animation: gradientShift 6s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradientShift {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* 🔘 Primary Button */
+.btn-primary {
+  padding: 12px 32px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #3b82f6, #9333ea, #06b6d4);
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 40px rgba(147, 51, 234, 0.4);
+}
+
+/* 🔘 Outline Button */
+.btn-outline {
+  padding: 12px 32px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease;
+}
+
+body.light .btn-outline {
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.btn-outline:hover {
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.1);
+}
+
+/* 🧊 PROJECT CARD */
+.project-card {
+  padding: 28px;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s ease;
+}
+
+/* Dark */
+body.dark .project-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Light */
+body.light .project-card {
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.project-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    0 0 40px rgba(59,130,246,0.2),
+    0 0 80px rgba(147,51,234,0.15);
+}
+
+/* 🧊 ABOUT CARD */
+.about-card,
+.skill-card {
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+}
+
+/* Dark */
+body.dark .about-card,
+body.dark .skill-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Light */
+body.light .about-card,
+body.light .skill-card {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.about-card:hover,
+.skill-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(59,130,246,0.3);
+  box-shadow: 0 0 20px rgba(59,130,246,0.2);
+}
+
+/* ✍️ INPUT */
+.input-style {
+  padding: 12px;
+  border-radius: 10px;
+  outline: none;
+  transition: 0.3s;
+}
+
+body.dark .input-style {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+}
+
+body.light .input-style {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.2);
+  color: black;
+}
+
+.input-style:focus {
+  border-color: rgba(59,130,246,0.5);
+  box-shadow: 0 0 10px rgba(59,130,246,0.2);
+}
+
+/* 🔗 SOCIAL ICON */
+.social-icon {
+  padding: 10px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+body.dark .social-icon {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+body.light .social-icon {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.social-icon:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 15px rgba(59,130,246,0.3);
+}
