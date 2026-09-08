@@ -1,430 +1,365 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
-import { supabase } from "../supabase";
-import { useEffect } from "react";
+import emailjs from "emailjs-com";
 
 export default function Contact({ theme }) {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const ref = useRef(null);
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("guestbook")) || [];
-    setMessages(saved);
-  }, []);
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  /* ================= SCROLL ANIMATION ================= */
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const contentY = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 0.75, 1],
+    [60, 20, 0, -20, -60],
+  );
+
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.35, 0.65, 0.8, 1],
+    [0.35, 0.8, 1, 1, 0.8, 0.35],
+  );
+
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 0.75, 1],
+    [0.97, 0.99, 1, 0.99, 0.97],
+  );
+
+  const glowY = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]);
+
+  const formScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.98, 1, 0.98]);
+
+  /* ================= FORM ================= */
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.message) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       alert("Please fill all fields");
       return;
     }
 
     setLoading(true);
-    setSuccess(false);
 
     try {
-      const res = await fetch("http://localhost:5000/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      const result = await emailjs.send(
+        "service_213bbu6",
+        "template_vthjwdh",
+        {
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        },
+        "qlT30LVow2EioD1A0",
+      );
+
+      console.log("EmailJS SUCCESS:", result);
+
+      setSuccess(true);
+
+      setForm({
+        name: "",
+        email: "",
+        message: "",
       });
 
-      const data = await res.json();
+      setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
+    } catch (error) {
+      console.error("EmailJS ERROR:", error);
+      console.error("Status:", error?.status);
+      console.error("Text:", error?.text);
 
-      if (data.success) {
-        setSuccess(true);
-        setForm({ name: "", email: "", message: "" });
-        setTimeout(() => setSuccess(false), 3000);
-      }
-    } catch (err) {
-      console.log(err);
+      alert(`Email failed: ${error?.text || "Unknown EmailJS error"}`);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
-
-  const [userId] = useState(() => {
-    let id = localStorage.getItem("guestUserId");
-    if (!id) {
-      id = "user_" + Math.random().toString(36).substring(2, 9);
-      localStorage.setItem("guestUserId", id);
-    }
-    return id;
-  });
-  const [messages, setMessages] = useState([]);
-  const [name, setName] = useState("");
-  const [text, setText] = useState("");
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const { data, error } = await supabase
-        .from("messages")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (!error) setMessages(data);
-    };
-
-    fetchMessages();
-  }, []);
-  useEffect(() => {
-    const channel = supabase
-      .channel("messages-realtime")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "messages",
-        },
-        (payload) => {
-          console.log("Realtime update:", payload);
-
-          if (payload.eventType === "INSERT") {
-            setMessages((prev) => [payload.new, ...prev]);
-          }
-
-          if (payload.eventType === "DELETE") {
-            setMessages((prev) =>
-              prev.filter((msg) => msg.id !== payload.old.id),
-            );
-          }
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const addMessage = async () => {
-    if (!name || !text) return;
-
-    const newMsg = {
-      name,
-      text,
-      ownerid: userId, // ✅ FIXED
-      x: Math.random() * 80,
-      y: Math.random() * 80,
-    };
-
-    const { data, error } = await supabase
-      .from("messages")
-      .insert([newMsg])
-      .select();
-
-    if (!error) {
-      setName("");
-      setText("");
-    }
-
-    setName("");
-    setText("");
-  };
-  const handleDelete = async (id) => {
-    await supabase.from("messages").delete().eq("id", id);
-
-    setMessages((prev) => prev.filter((msg) => msg.id !== id));
-  };
-
   return (
-    <section className="py-24 px-6 relative overflow-hidden" id="contact">
-      {/* BACKGROUND */}
+    <section
+      ref={ref}
+      id="contact"
+      className={`relative overflow-hidden pt-10 pb-20 px-6 ${
+        theme === "dark" ? "bg-[#020617]" : "bg-white"
+      }`}
+    >
+      {/* ================= BACKGROUND ================= */}
+
       <div
-        className={`absolute inset-0 ${
+        className={`absolute inset-0 pointer-events-none ${
           theme === "dark"
             ? "bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#020617]"
-            : "bg-gradient-to-br from-white via-purple-50 to-white"
+            : "bg-gradient-to-br from-white via-purple-50/60 to-white"
         }`}
       />
 
-      {/* GLOW */}
-      <div
-        className={`absolute w-[400px] h-[400px] blur-[150px] top-0 left-0 rounded-full ${
-          theme === "dark" ? "bg-purple-500/20" : "bg-purple-300/30"
-        }`}
-      />
-      <div
-        className={`absolute w-[400px] h-[400px] blur-[150px] bottom-0 right-0 rounded-full ${
-          theme === "dark" ? "bg-blue-500/20" : "bg-blue-300/30"
+      {/* ================= PURPLE GLOW ================= */}
+
+      <motion.div
+        style={{
+          y: glowY,
+          opacity,
+        }}
+        className={`absolute w-[450px] h-[450px] blur-[150px] -left-40 top-0 rounded-full pointer-events-none ${
+          theme === "dark" ? "bg-purple-500/15" : "bg-purple-300/20"
         }`}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto">
-        {/* CONTACT SECTION */}
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          {/* LEFT */}
+      {/* ================= CYAN GLOW ================= */}
+
+      <motion.div
+        style={{
+          y: glowY,
+        }}
+        className={`absolute w-[400px] h-[400px] blur-[150px] right-[-180px] bottom-0 rounded-full pointer-events-none ${
+          theme === "dark" ? "bg-cyan-500/10" : "bg-cyan-300/15"
+        }`}
+      />
+
+      {/* ================= CONTENT ================= */}
+
+      <motion.div
+        style={{
+          y: contentY,
+          scale,
+          opacity,
+        }}
+        className="relative z-10 max-w-6xl mx-auto w-full"
+      >
+        {/* ================= SECTION LABEL ================= */}
+
+        <div className="mb-10">
+          <div className="flex items-center gap-4 mb-5">
+            <span
+              className={`h-px w-10 ${
+                theme === "dark" ? "bg-white/30" : "bg-gray-300"
+              }`}
+            />
+
+            <span
+              className={`text-xs tracking-[0.35em] uppercase ${
+                theme === "dark" ? "text-white/40" : "text-gray-400"
+              }`}
+            >
+              Contact / 04
+            </span>
+          </div>
+
+          <h2
+            className={`font-serif text-4xl md:text-5xl lg:text-6xl tracking-[-0.04em] ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Let's connect
+            <span className="gradient-text">.</span>
+          </h2>
+        </div>
+
+        {/* ================= MAIN GRID ================= */}
+
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* ================= LEFT ================= */}
+
           <div>
-            <h1 className="text-5xl font-bold leading-tight">
-              Let’s build something <br />
-              <span className="gradient-text">epic.</span>
-            </h1>
+            <h3
+              className={`text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.9] tracking-[-0.04em] ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Let's build
+              <br />
+              something <span className="gradient-text">epic.</span>
+            </h3>
 
             <p
-              className={`mt-4 ${
+              className={`mt-6 max-w-md text-lg leading-relaxed ${
                 theme === "dark" ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              Have an idea? Let’s connect and make it real.
+              Have an idea? Let's connect and make it real.
             </p>
 
-            <p className="mt-6 text-lg">📩 pdiyaaa@gmail.com</p>
+            {/* EMAIL */}
 
-            <p className="text-green-500 mt-2">
-              ● Available for internships & collaborations
-            </p>
-            <div className="flex gap-4 mt-6 text-xl">
-              {/* GitHub */}
+            <a
+              href="mailto:diyapareta23@gmail.com"
+              className={`inline-block mt-7 text-lg transition-opacity duration-300 hover:opacity-60 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              📩 diyapareta23@gmail.com
+            </a>
+
+            {/* SOCIALS */}
+
+            <div className="flex gap-5 mt-7 text-2xl">
               <a
                 href="https://github.com/Diyapareta"
                 target="_blank"
-                rel="noopener noreferrer"
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition ${
+                rel="noreferrer"
+                data-cursor="GITHUB"
+                className={`transition-all duration-300 hover:-translate-y-1 ${
                   theme === "dark"
-                    ? "bg-white/10 text-white hover:bg-purple-500/20 hover:shadow-purple-500/30 hover:shadow-lg"
-                    : "bg-white shadow-md border border-gray-200 text-gray-700 hover:text-purple-500"
-                } hover:scale-110`}
+                    ? "text-white/60 hover:text-white"
+                    : "text-gray-600 hover:text-gray-950"
+                }`}
               >
                 <FaGithub />
               </a>
 
-              {/* LinkedIn */}
               <a
-                href="https://www.linkedin.com/in/diya-pareta"
+                href="https://www.linkedin.com/in/diya-pareta/"
                 target="_blank"
-                rel="noopener noreferrer"
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition ${
+                rel="noreferrer"
+                data-cursor="LINKEDIN"
+                className={`transition-all duration-300 hover:-translate-y-1 ${
                   theme === "dark"
-                    ? "bg-white/10 text-white hover:bg-purple-500/20 hover:shadow-purple-500/30 hover:shadow-lg"
-                    : "bg-white shadow-md border border-gray-200 text-gray-700 hover:text-purple-500"
-                } hover:scale-110`}
+                    ? "text-white/60 hover:text-white"
+                    : "text-gray-600 hover:text-gray-950"
+                }`}
               >
                 <FaLinkedin />
               </a>
 
-              {/* Email */}
               <a
-                href="mailto:pdiyaaa@gmail.com"
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition ${
+                href="mailto:diyapareta23@gmail.com"
+                data-cursor="EMAIL"
+                className={`transition-all duration-300 hover:-translate-y-1 ${
                   theme === "dark"
-                    ? "bg-white/10 text-white hover:bg-purple-500/20 hover:shadow-purple-500/30 hover:shadow-lg"
-                    : "bg-white shadow-md border border-gray-200 text-gray-700 hover:text-purple-500"
-                } hover:scale-110`}
+                    ? "text-white/60 hover:text-white"
+                    : "text-gray-600 hover:text-gray-950"
+                }`}
               >
                 <HiOutlineMail />
               </a>
             </div>
+
+            {/* AVAILABILITY */}
+
+            <p
+              className={`mt-10 text-xs tracking-[0.3em] ${
+                theme === "dark" ? "text-white/25" : "text-gray-400"
+              }`}
+            >
+              AVAILABLE FOR OPPORTUNITIES
+            </p>
           </div>
 
-          {/* RIGHT FORM */}
-          <div
-            className={`p-8 rounded-3xl backdrop-blur-xl border ${
+          {/* ================= FORM ================= */}
+
+          <motion.form
+            onSubmit={handleSubmit}
+            style={{
+              scale: formScale,
+            }}
+            className={`p-7 md:p-9 rounded-[28px] backdrop-blur-xl border ${
               theme === "dark"
                 ? "bg-white/5 border-white/10"
-                : "bg-white border-gray-200 shadow-xl"
+                : "bg-white/90 border-gray-200 shadow-xl"
             }`}
           >
+            {/* NAME */}
+
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
               placeholder="Your Name"
-              className="w-full mb-4 p-3 bg-transparent border-b border-white/20"
+              required
+              className={`w-full mb-5 p-3 bg-transparent border-b outline-none transition-colors ${
+                theme === "dark"
+                  ? "border-white/20 text-white placeholder:text-white/40 focus:border-purple-400"
+                  : "border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-purple-400"
+              }`}
             />
+
+            {/* EMAIL */}
+
             <input
               name="email"
+              type="email"
               value={form.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full mb-4 p-3 bg-transparent border-b border-white/20"
+              required
+              className={`w-full mb-5 p-3 bg-transparent border-b outline-none transition-colors ${
+                theme === "dark"
+                  ? "border-white/20 text-white placeholder:text-white/40 focus:border-purple-400"
+                  : "border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-purple-400"
+              }`}
             />
+
+            {/* MESSAGE */}
+
             <textarea
               name="message"
               value={form.message}
               onChange={handleChange}
               placeholder="Message"
-              className="w-full mb-4 p-3 bg-transparent border-b border-white/20"
+              rows="3"
+              required
+              className={`w-full mb-6 p-3 bg-transparent border-b outline-none resize-none transition-colors ${
+                theme === "dark"
+                  ? "border-white/20 text-white placeholder:text-white/40 focus:border-purple-400"
+                  : "border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-purple-400"
+              }`}
             />
 
+            {/* SEND BUTTON */}
+
             <button
-              onClick={handleSubmit}
-              className="w-full py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+              type="submit"
+              disabled={loading}
+              data-cursor="SEND"
+              className="w-full py-3.5 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500 text-white font-medium transition-transform duration-200 hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
             >
               {loading ? "Sending..." : "Send Message"}
             </button>
 
+            {/* SUCCESS MESSAGE */}
+
             {success && (
-              <p className="text-green-400 mt-3">Message sent successfully!</p>
+              <motion.p
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                className="text-green-500 mt-4 text-center text-sm"
+              >
+                Message sent successfully 🚀
+              </motion.p>
             )}
-          </div>
+          </motion.form>
         </div>
-
-        {/* 💬 DEV WALL */}
-
-        {/* 💬 DEV WALL */}
-        <div className="mt-20 max-w-6xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-3 flex items-center gap-2">
-            💬 Dev Wall
-          </h2>
-
-          {/* GRID */}
-          <div className="grid md:grid-cols-2 gap-10 items-start mt-10">
-            {/* 🔹 LEFT INPUT */}
-            <div
-              className={`p-6 rounded-2xl backdrop-blur-xl border ${
-                theme === "dark"
-                  ? "bg-white/5 border-white/10"
-                  : "bg-white border-gray-200 shadow-md"
-              }`}
-            >
-              <input
-                type="text"
-                placeholder="Your Name"
-                className={`w-full bg-transparent border-b py-2 mb-4 outline-none ${
-                  theme === "dark"
-                    ? "border-white/30 text-white placeholder-gray-400"
-                    : "border-gray-300 text-black placeholder-gray-500"
-                }`}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-
-              <textarea
-                placeholder="Say something cool..."
-                className={`w-full bg-transparent border-b py-2 mb-4 outline-none ${
-                  theme === "dark"
-                    ? "border-white/30 text-white placeholder-gray-400"
-                    : "border-gray-300 text-black placeholder-gray-500"
-                }`}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
-
-              <button
-                onClick={addMessage}
-                className="px-6 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:scale-105 transition"
-              >
-                Post 🚀
-              </button>
-
-              {/* 🟣 LEFT HELPER TEXT */}
-              <p
-                className={`mt-4 text-sm leading-relaxed ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                Share your thoughts, feedback, or just say hi 👋 Your message
-                will float on the wall ✨
-              </p>
-            </div>
-
-            {/* 🔹 RIGHT FLOATING AREA */}
-            <div>
-              <div
-                className={`relative h-[300px] overflow-hidden rounded-2xl border ${
-                  theme === "dark"
-                    ? "border-white/10 bg-white/[0.02]"
-                    : "border-gray-200 bg-white"
-                }`}
-              >
-                {/* Empty state */}
-                {messages.length === 0 && (
-                  <p
-                    className={`absolute inset-0 flex items-center justify-center text-sm ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    No messages yet 👀 Be the first to say something!
-                  </p>
-                )}
-
-                {/* Floating Messages */}
-                {messages.map((msg, i) => {
-                  const handleDelete = () => {
-                    setMessages((prev) =>
-                      prev.filter((_, index) => index !== i),
-                    );
-                  };
-
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        delay: i * 0.2,
-                      }}
-                      style={{
-                        position: "absolute",
-                        left: `${msg.x}%`,
-                        top: `${msg.y}%`,
-                      }}
-                      whileHover={{ scale: 1.1 }}
-                      className={`group px-4 py-3 rounded-xl text-sm max-w-[200px] backdrop-blur-xl border transition ${
-                        theme === "dark"
-                          ? "bg-white/10 border-white/20 text-white shadow-lg shadow-purple-500/10"
-                          : "bg-white border-gray-200 text-black shadow-md"
-                      }`}
-                    >
-                      {/* ❌ DELETE BUTTON */}
-                      {msg.ownerid === userId && (
-                        <button
-                          onClick={() => handleDelete(msg.id)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 rounded-full opacity-0 group-hover:opacity-100 transition"
-                        >
-                          ✕
-                        </button>
-                      )}
-
-                      <p>{msg.text}</p>
-                      <p className="text-xs mt-1 opacity-70">— {msg.name}</p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 🚀 CTA */}
-        <div className="mt-28 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Let’s build something amazing 🚀
-          </h2>
-
-          <button
-            onClick={() =>
-              document
-                .getElementById("contact")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:scale-105 transition"
-          >
-            Contact Me
-          </button>
-        </div>
-
-        {/* FOOTER */}
-        <div className="mt-10 text-center pb-10">
-          <p
-            className={`text-sm ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            Made with ❤️ by Diya
-          </p>
-
-          <p className="text-xs mt-2 text-gray-500">
-            © 2026 All rights reserved
-          </p>
-        </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

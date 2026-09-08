@@ -1,115 +1,273 @@
 import { motion } from "framer-motion";
-import { FaReact, FaNodeJs, FaAws, FaPython, FaGithub } from "react-icons/fa";
 import {
-  SiMongodb,
-  SiTensorflow,
-  SiOpencv,
-  SiJavascript,
-  SiPostgresql,
+  FaReact,
+  FaNodeJs,
+  FaPython,
+  FaGithub,
+  FaBootstrap,
+} from "react-icons/fa";
+
+import {
+  SiNextdotjs,
+  SiRedux,
+  SiTailwindcss,
+  SiFramer,
+  SiSass,
   SiExpress,
+  SiMongodb,
+  SiPostgresql,
+  SiMysql,
+  SiJavascript,
+  SiTypescript,
+  SiDocker,
+  SiGit,
+  SiSupabase,
+  SiVercel,
 } from "react-icons/si";
 
-const skills = [
+const frontendSkills = [
+  { name: "JavaScript", icon: <SiJavascript /> },
+  { name: "TypeScript", icon: <SiTypescript /> },
   { name: "React", icon: <FaReact /> },
+  { name: "Next.js", icon: <SiNextdotjs /> },
+  { name: "Redux", icon: <SiRedux /> },
+  { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+  { name: "Framer Motion", icon: <SiFramer /> },
+  { name: "Sass", icon: <SiSass /> },
+  { name: "Bootstrap", icon: <FaBootstrap /> },
+];
+
+const backendSkills = [
   { name: "Node.js", icon: <FaNodeJs /> },
   { name: "Express.js", icon: <SiExpress /> },
+  { name: "Python", icon: <FaPython /> },
   { name: "MongoDB", icon: <SiMongodb /> },
   { name: "PostgreSQL", icon: <SiPostgresql /> },
-  { name: "TensorFlow", icon: <SiTensorflow /> },
-  { name: "OpenCV", icon: <SiOpencv /> },
-  { name: "JavaScript", icon: <SiJavascript /> },
-  { name: "Python", icon: <FaPython /> },
-  { name: "AWS", icon: <FaAws /> },
-  { name: "GitHub", icon: <FaGithub /> },
-  { name: "Auth.js", icon: "🔐" }, // simple icon (no official one)
+  { name: "MySQL", icon: <SiMysql /> },
 ];
+
+const toolsSkills = [
+  { name: "Git", icon: <SiGit /> },
+  { name: "GitHub", icon: <FaGithub /> },
+  { name: "Docker", icon: <SiDocker /> },
+  { name: "Supabase", icon: <SiSupabase /> },
+  { name: "Vercel", icon: <SiVercel /> },
+];
+
+function SkillItem({ skill, theme, index }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.45,
+        delay: index * 0.05,
+      }}
+      whileHover={{ y: -4 }}
+      className="group flex items-center gap-3 md:gap-4"
+    >
+      {/* Icon */}
+      <div
+        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center text-xl md:text-2xl transition-all duration-300 group-hover:scale-110 ${
+          theme === "dark"
+            ? "bg-white/[0.06] border border-white/10 group-hover:border-purple-400/40"
+            : "bg-white border border-purple-100 shadow-sm group-hover:border-purple-300"
+        }`}
+      >
+        <span className="gradient-text">{skill.icon}</span>
+      </div>
+
+      {/* Name */}
+      <span
+        className={`text-base md:text-lg font-medium transition-colors duration-300 ${
+          theme === "dark"
+            ? "text-gray-300 group-hover:text-white"
+            : "text-gray-700 group-hover:text-purple-600"
+        }`}
+      >
+        {skill.name}
+      </span>
+    </motion.div>
+  );
+}
+
+function SkillCategory({ title, skills, theme, number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7 }}
+      className={`relative py-12 md:py-16 border-t ${
+        theme === "dark" ? "border-white/10" : "border-purple-200"
+      }`}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-[35%_65%] gap-10 md:gap-8">
+        {/* Category title */}
+        <div>
+          <div className="flex items-center gap-4 mb-5">
+            <span
+              className={`text-xs tracking-[0.3em] font-mono ${
+                theme === "dark" ? "text-gray-600" : "text-gray-400"
+              }`}
+            >
+              {number}
+            </span>
+
+            <div
+              className={`h-px w-10 ${
+                theme === "dark" ? "bg-white/20" : "bg-purple-300"
+              }`}
+            />
+          </div>
+
+          <h3
+            className={`font-black tracking-tighter leading-[0.9] text-5xl sm:text-6xl md:text-7xl ${
+              theme === "dark" ? "text-white" : "text-gray-950"
+            }`}
+          >
+            {title}
+          </h3>
+        </div>
+
+        {/* Skills */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-7 content-start">
+          {skills.map((skill, index) => (
+            <SkillItem
+              key={skill.name}
+              skill={skill}
+              theme={theme}
+              index={index}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Skills({ theme }) {
   return (
     <section
       id="skills"
-      className="py-24 px-6 text-center relative overflow-hidden"
+      className={`relative overflow-hidden px-6 sm:px-10 md:px-16 lg:px-20 py-24 md:py-32 ${
+        theme === "dark"
+          ? "bg-[#020617] text-white"
+          : "bg-gradient-to-br from-white via-purple-50 to-white text-gray-900"
+      }`}
     >
-      {/* Background */}
-      <div
-        className={`absolute inset-0 ${
-          theme === "dark"
-            ? "bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#020617]"
-            : "bg-gradient-to-br from-white via-purple-50 to-white"
-        }`}
-      />
+      {/* Background glow */}
+      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-purple-500/10 blur-[150px] pointer-events-none" />
 
-      {/* Glow */}
-      <div
-        className={`absolute w-[400px] h-[400px] blur-[150px] top-0 left-0 rounded-full ${
-          theme === "dark" ? "bg-purple-500/20" : "bg-purple-300/30"
-        }`}
-      />
-      <div
-        className={`absolute w-[400px] h-[400px] blur-[150px] bottom-0 right-0 rounded-full ${
-          theme === "dark" ? "bg-blue-500/20" : "bg-blue-300/30"
-        }`}
-      />
+      <div className="absolute bottom-0 -right-40 w-[500px] h-[500px] rounded-full bg-cyan-400/10 blur-[150px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto">
-        {/* Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: 60 }}
+      {/* Background text */}
+      <div
+        className={`absolute top-24 right-[-5%] text-[20vw] font-black tracking-tighter pointer-events-none select-none ${
+          theme === "dark" ? "text-white/[0.025]" : "text-purple-900/[0.035]"
+        }`}
+      >
+        STACK
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-4xl md:text-5xl font-bold gradient-text"
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="mb-10 md:mb-16"
         >
-          Tech Stack
-        </motion.h2>
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-2xl gradient-text">✱</span>
 
-        <p
-          className={`text-sm mt-3 mb-12 ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}
-        >
-          technologies i work with
-        </p>
-
-        {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {skills.map((skill, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              whileHover={{ y: -6, scale: 1.05 }}
-              className={`p-5 rounded-2xl backdrop-blur-xl flex flex-col items-center justify-center gap-3 transition ${
-                theme === "dark"
-                  ? "bg-white/5 border border-white/10 hover:shadow-purple-500/20 hover:shadow-xl"
-                  : "bg-white border border-gray-200 shadow-md hover:shadow-xl"
+            <span
+              className={`text-sm md:text-base tracking-[0.15em] uppercase font-medium ${
+                theme === "dark" ? "text-gray-300" : "text-gray-600"
               }`}
             >
-              {/* Icon */}
-              <div
-                className={`text-3xl ${
-                  theme === "dark" ? "text-white" : "text-purple-600"
+              <motion.div
+                initial={{ opacity: 0, x: 80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className={`absolute top-24 right-[-5%] text-[20vw] font-black tracking-tighter pointer-events-none select-none ${
+                  theme === "dark"
+                    ? "text-white/[0.025]"
+                    : "text-purple-900/[0.035]"
                 }`}
               >
-                {skill.icon}
-              </div>
+                STACK
+              </motion.div>
+            </span>
+          </div>
 
-              {/* Name */}
-              <p
-                className={`text-sm ${
-                  theme === "dark" ? "text-white/90" : "text-gray-700"
-                }`}
-              >
-                {skill.name}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+          <h2
+            className={`font-black tracking-tighter leading-[0.85] text-[15vw] sm:text-[11vw] md:text-[9vw] ${
+              theme === "dark" ? "text-white" : "text-gray-950"
+            }`}
+          >
+            TECH
+            <br />
+            <span className="gradient-text">STACK</span>
+          </h2>
 
-        {/* Extra line */}
-        <p className="mt-12 text-sm opacity-70">
-          Always learning and exploring new technologies 🚀
-        </p>
+          <p
+            className={`mt-8 max-w-lg text-sm md:text-base leading-relaxed ${
+              theme === "dark" ? "text-gray-500" : "text-gray-600"
+            }`}
+          >
+            Tools and technologies I use to turn ideas into functional, scalable
+            and interactive products.
+          </p>
+        </motion.div>
+
+        {/* Frontend */}
+        <SkillCategory
+          number="01"
+          title="FRONTEND"
+          skills={frontendSkills}
+          theme={theme}
+        />
+
+        {/* Backend */}
+        <SkillCategory
+          number="02"
+          title="BACKEND"
+          skills={backendSkills}
+          theme={theme}
+        />
+
+        {/* Tools */}
+        <SkillCategory
+          number="03"
+          title="TOOLS"
+          skills={toolsSkills}
+          theme={theme}
+        />
+
+        {/* Bottom */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="pt-10 flex items-center gap-4"
+        >
+          <div className="h-px flex-1 bg-gradient-to-r from-purple-500/40 to-cyan-400/20" />
+
+          <span
+            className={`text-[10px] md:text-xs tracking-[0.25em] uppercase ${
+              theme === "dark" ? "text-gray-600" : "text-gray-400"
+            }`}
+          >
+            Always learning
+          </span>
+
+          <div className="h-px flex-1 bg-gradient-to-l from-cyan-400/40 to-purple-500/20" />
+        </motion.div>
       </div>
     </section>
   );

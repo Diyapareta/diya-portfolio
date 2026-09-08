@@ -170,3 +170,1177 @@ body.light .social-icon {
   transform: translateY(-4px);
   box-shadow: 0 0 15px rgba(59,130,246,0.3);
 }
+/* =========================================
+   CINEMATIC PORTFOLIO INTRO
+========================================= */
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(167, 139, 250, 0.25),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(34, 211, 238, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f5f3ff,
+      #eef9ff
+    );
+
+  color: #111827;
+}
+
+
+/* =========================================
+   GLOW
+========================================= */
+
+.intro-glow {
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  filter: blur(120px);
+
+  pointer-events: none;
+}
+
+.intro-glow-one {
+  top: -250px;
+  left: -150px;
+
+  background: rgba(96, 165, 250, 0.15);
+}
+
+.intro-glow-two {
+  right: -200px;
+  bottom: -250px;
+
+  background: rgba(167, 139, 250, 0.18);
+}
+
+
+/* =========================================
+   TOP LABEL
+========================================= */
+
+.intro-label {
+  position: absolute;
+
+  top: 35px;
+  left: 45px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.3em;
+
+  color: #64748b;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+
+.intro-center {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(1200px, 90vw);
+}
+
+
+/* =========================================
+   OVERLINE
+========================================= */
+
+.intro-overline {
+  margin-left: 8px;
+  margin-bottom: 12px;
+
+  font-size: clamp(12px, 1vw, 16px);
+
+  font-weight: 700;
+
+  letter-spacing: 0.35em;
+
+  color: #64748b;
+}
+
+
+/* =========================================
+   NAME
+========================================= */
+
+.intro-name-container {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  line-height: 0.78;
+
+  overflow: visible;
+}
+
+.intro-name {
+  margin: 0;
+
+  font-size: clamp(
+    5rem,
+    14vw,
+    13rem
+  );
+
+  font-weight: 900;
+
+  letter-spacing: -0.08em;
+
+  white-space: nowrap;
+
+  will-change: transform;
+}
+
+
+/* DIYA */
+
+.intro-name-dark {
+  color: #111827;
+}
+
+
+/* PARETA */
+
+.intro-name-gradient {
+  margin-left: clamp(
+    3rem,
+    10vw,
+    11rem
+  );
+}
+
+
+/* =========================================
+   GIANT BACKGROUND NAME
+========================================= */
+
+.intro-background-name {
+  position: absolute;
+
+  top: 50%;
+  left: 8%;
+
+  z-index: -1;
+
+  transform: translateY(-50%);
+
+  font-size: clamp(
+    8rem,
+    25vw,
+    30rem
+  );
+
+  font-weight: 900;
+
+  letter-spacing: -0.08em;
+
+  white-space: nowrap;
+
+  color: rgba(99, 102, 241, 0.08);
+
+  pointer-events: none;
+
+  will-change: transform;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.intro-description {
+  margin-top: 55px;
+
+  font-size: clamp(
+    11px,
+    1.2vw,
+    15px
+  );
+
+  font-weight: 600;
+
+  letter-spacing: 0.28em;
+
+  color: #64748b;
+}
+
+
+/* =========================================
+   SIDE TEXT
+========================================= */
+
+.intro-side-text {
+  position: absolute;
+
+  left: 30px;
+  bottom: 80px;
+
+  writing-mode: vertical-rl;
+
+  transform: rotate(180deg);
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.3em;
+
+  color: #94a3b8;
+}
+
+
+/* =========================================
+   PROGRESS LINE
+========================================= */
+
+.intro-progress {
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 4px;
+
+  transform-origin: left;
+
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #9333ea,
+    #06b6d4
+  );
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+.dark .intro-screen {
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(59, 130, 246, 0.15),
+      transparent 42%
+    ),
+    #020617;
+
+  color: white;
+}
+
+.dark .intro-name-dark {
+  color: white;
+}
+
+.dark .intro-label,
+.dark .intro-overline,
+.dark .intro-description,
+.dark .intro-side-text {
+  color: #94a3b8;
+}
+
+.dark .intro-background-name {
+  color: rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .intro-label {
+    top: 25px;
+    left: 25px;
+
+    font-size: 9px;
+  }
+
+  .intro-center {
+    width: 92vw;
+  }
+
+  .intro-name {
+    font-size: clamp(
+      4rem,
+      19vw,
+      8rem
+    );
+  }
+
+  .intro-name-gradient {
+    margin-left: 8vw;
+  }
+
+  .intro-description {
+    margin-top: 35px;
+
+    font-size: 9px;
+
+    letter-spacing: 0.18em;
+  }
+
+  .intro-side-text {
+    left: 15px;
+    bottom: 50px;
+  }
+
+  .intro-background-name {
+    font-size: 35vw;
+  }
+}
+/* =====================================================
+   EDITORIAL HERO — YOUR ORIGINAL THEME
+===================================================== */
+
+.editorial-hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+
+  transition:
+    background 0.5s ease,
+    color 0.5s ease;
+}
+
+
+/* =====================================================
+   LIGHT THEME
+===================================================== */
+
+.editorial-light {
+  background:
+    radial-gradient(
+      circle at 25% 30%,
+      rgba(96, 165, 250, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 55% 25%,
+      rgba(167, 139, 250, 0.16),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 85% 35%,
+      rgba(34, 211, 238, 0.10),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f8f6ff,
+      #f5fbff
+    );
+
+  color: #111827;
+}
+
+
+/* =====================================================
+   DARK THEME
+===================================================== */
+
+.editorial-dark {
+  background:
+    radial-gradient(
+      circle at 25% 30%,
+      rgba(59, 130, 246, 0.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 55% 25%,
+      rgba(147, 51, 234, 0.12),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 85% 35%,
+      rgba(6, 182, 212, 0.08),
+      transparent 30%
+    ),
+    #020617;
+
+  color: white;
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.editorial-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   GIANT BACKGROUND WORD
+===================================================== */
+
+.editorial-giant-word {
+  position: absolute;
+
+  z-index: 1;
+
+  top: 32%;
+  left: 28%;
+
+  font-size: clamp(
+    9rem,
+    23vw,
+    25rem
+  );
+
+  font-weight: 900;
+
+  line-height: 0.8;
+
+  letter-spacing: -0.09em;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  color: rgba(96, 165, 250, 0.12);
+}
+
+
+/* dark version */
+
+.editorial-dark .editorial-giant-word {
+  color: rgba(255, 255, 255, 0.07);
+}
+
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+.editorial-main {
+  position: relative;
+
+  z-index: 10;
+
+  margin-left: 14%;
+
+  width: min(720px, 60vw);
+
+  padding-top: 5vh;
+}
+
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.editorial-label {
+  margin-bottom: 18px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.3em;
+
+  color: #64748b;
+}
+
+.editorial-dark .editorial-label {
+  color: #94a3b8;
+}
+
+
+/* =====================================================
+   HEADING
+===================================================== */
+
+.editorial-heading {
+  line-height: 0.82;
+}
+
+.editorial-heading h1 {
+  margin: 0;
+
+  font-size: clamp(
+    4.5rem,
+    8vw,
+    8.5rem
+  );
+
+  font-weight: 900;
+
+  letter-spacing: -0.07em;
+}
+
+
+/* =====================================================
+   FULL STACK — YOUR GRADIENT
+===================================================== */
+
+.editorial-title-green {
+  background:
+    linear-gradient(
+      90deg,
+      #60a5fa,
+      #a78bfa,
+      #22d3ee
+    );
+
+  background-size: 200% auto;
+
+  animation:
+    gradientShift 6s linear infinite;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  color: transparent;
+}
+
+
+/* =====================================================
+   DEVELOPER
+===================================================== */
+
+.editorial-title-white {
+  color: #111827;
+}
+
+.editorial-dark .editorial-title-white {
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.editorial-description {
+  max-width: 590px;
+
+  margin-top: 48px;
+
+  font-size: 17px;
+
+  line-height: 1.75;
+
+  color: #475569;
+}
+
+.editorial-description strong {
+  color: #111827;
+}
+
+.editorial-dark .editorial-description {
+  color: #cbd5e1;
+}
+
+.editorial-dark .editorial-description strong {
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.editorial-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 35px;
+}
+
+
+/* =====================================================
+   PRIMARY BUTTON
+===================================================== */
+
+.editorial-talk-button {
+  padding: 16px 38px;
+
+  border: none;
+
+  border-radius: 9999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #3b82f6,
+      #9333ea,
+      #06b6d4
+    );
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 30px
+    rgba(59, 130, 246, 0.25);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.editorial-talk-button:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 15px 40px
+    rgba(147, 51, 234, 0.3);
+}
+
+
+/* =====================================================
+   SECONDARY BUTTON
+===================================================== */
+
+.editorial-work-button {
+  padding: 15px 25px;
+
+  border: 1px solid rgba(100, 116, 139, 0.4);
+
+  border-radius: 9999px;
+
+  background: rgba(255, 255, 255, 0.35);
+
+  color: #334155;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.editorial-work-button:hover {
+  transform: translateY(-3px);
+
+  border-color: #8b5cf6;
+
+  color: #7c3aed;
+
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.editorial-dark .editorial-work-button {
+  background: rgba(255, 255, 255, 0.05);
+
+  border-color: rgba(255, 255, 255, 0.2);
+
+  color: #e2e8f0;
+}
+
+.editorial-dark .editorial-work-button:hover {
+  border-color: #a78bfa;
+
+  color: #c4b5fd;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =====================================================
+   AVAILABILITY
+===================================================== */
+
+.editorial-availability {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-top: 25px;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+.editorial-availability span {
+  width: 10px;
+  height: 10px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #60a5fa,
+      #a78bfa
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(96, 165, 250, 0.4);
+}
+
+.editorial-dark .editorial-availability {
+  color: #94a3b8;
+}
+
+
+/* =====================================================
+   RIGHT INFORMATION
+===================================================== */
+
+.editorial-side-info {
+  position: absolute;
+
+  z-index: 12;
+
+  top: 54%;
+
+  right: 17%;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  max-width: 270px;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #64748b;
+}
+
+.editorial-dark .editorial-side-info {
+  color: #94a3b8;
+}
+
+
+/* =====================================================
+   EMAIL
+===================================================== */
+
+.editorial-email {
+  position: absolute;
+
+  z-index: 15;
+
+  left: 27px;
+
+  bottom: 90px;
+
+  writing-mode: vertical-rl;
+
+  transform: rotate(180deg);
+
+  font-size: 13px;
+
+  letter-spacing: 0.08em;
+
+  color: #64748b;
+}
+
+.editorial-dark .editorial-email {
+  color: #94a3b8;
+}
+
+
+/* =====================================================
+   GEOMETRIC BLOCKS
+===================================================== */
+
+.editorial-block {
+  position: absolute;
+
+  z-index: 5;
+
+  right: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(96, 165, 250, 0.08),
+      rgba(167, 139, 250, 0.12)
+    );
+
+  border-left:
+    1px solid rgba(139, 92, 246, 0.08);
+}
+
+
+/* light */
+
+.editorial-light .editorial-block {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(96, 165, 250, 0.07),
+      rgba(167, 139, 250, 0.12)
+    );
+}
+
+
+/* dark */
+
+.editorial-dark .editorial-block {
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  border-left:
+    1px solid rgba(255, 255, 255, 0.05);
+}
+
+
+/* top block */
+
+.editorial-block-top {
+  top: 0;
+
+  width: 19vw;
+  height: 13vh;
+}
+
+
+/* middle block */
+
+.editorial-block-middle {
+  top: 13vh;
+
+  width: 29vw;
+  height: 60vh;
+}
+
+
+/* bottom block */
+
+.editorial-block-bottom {
+  bottom: 0;
+
+  width: 50vw;
+  height: 18vh;
+}
+
+
+/* =====================================================
+   DOTS
+===================================================== */
+
+.editorial-dots span {
+  position: absolute;
+
+  z-index: 3;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: #94a3b8;
+}
+
+.editorial-dark .editorial-dots span {
+  background: #64748b;
+}
+
+
+/* =====================================================
+   CHAT BUTTON
+===================================================== */
+
+.editorial-chat-button {
+  position: fixed;
+
+  z-index: 80;
+
+  right: 30px;
+  bottom: 30px;
+
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(139, 92, 246, 0.25);
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(96, 165, 250, 0.9),
+      rgba(147, 51, 234, 0.9)
+    );
+
+  font-size: 23px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 15px 40px
+    rgba(59, 130, 246, 0.25);
+
+  transition:
+    transform 0.3s ease;
+}
+
+.editorial-chat-button:hover {
+  transform: scale(1.1);
+}
+
+
+/* =====================================================
+   CHAT WINDOW
+===================================================== */
+
+.editorial-chat {
+  position: fixed;
+
+  z-index: 100;
+
+  right: 30px;
+  bottom: 30px;
+
+  width: 350px;
+  height: 450px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(20px);
+
+  background: rgba(255, 255, 255, 0.82);
+
+  border: 1px solid rgba(139, 92, 246, 0.15);
+
+  box-shadow:
+    0 25px 80px
+    rgba(59, 130, 246, 0.18);
+}
+
+.editorial-dark .editorial-chat {
+  background: rgba(15, 23, 42, 0.9);
+
+  border-color: rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 25px 80px
+    rgba(0, 0, 0, 0.5);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 800px) {
+
+  .editorial-main {
+    width: 82vw;
+
+    margin-left: 8%;
+
+    padding-top: 12vh;
+  }
+
+  .editorial-heading h1 {
+    font-size: 15vw;
+  }
+
+  .editorial-description {
+    max-width: 75vw;
+
+    margin-top: 35px;
+
+    font-size: 14px;
+  }
+
+  .editorial-actions {
+    flex-wrap: wrap;
+  }
+
+  .editorial-side-info {
+    top: auto;
+
+    right: 8%;
+
+    bottom: 28%;
+
+    max-width: 170px;
+
+    font-size: 11px;
+  }
+
+  .editorial-giant-word {
+    top: 40%;
+
+    left: 10%;
+
+    font-size: 35vw;
+  }
+
+  .editorial-email {
+    display: none;
+  }
+
+  .editorial-block-top {
+    width: 25vw;
+  }
+
+  .editorial-block-middle {
+    width: 25vw;
+  }
+
+  .editorial-block-bottom {
+    width: 65vw;
+  }
+
+  .editorial-chat {
+    right: 15px;
+    left: 15px;
+
+    width: auto;
+  }
+
+  .editorial-chat-button {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+/* ============================= */
+/* CUSTOM CINEMATIC SCROLLBAR */
+/* ============================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #8b5cf6,
+    #3b82f6,
+    #22d3ee
+  );
+  border-radius: 999px;
+}
+
+/* Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #a78bfa,
+    #60a5fa,
+    #67e8f9
+  );
+}
+
+/* ============================= */
+/* LIGHT MODE */
+/* ============================= */
+
+body.light::-webkit-scrollbar-track {
+  background: #f8f7ff;
+}
+
+body.light::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #8b5cf6,
+    #6366f1,
+    #06b6d4
+  );
+}
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+body.dark::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+body.dark::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #a78bfa,
+    #6366f1,
+    #22d3ee
+  );
+}
