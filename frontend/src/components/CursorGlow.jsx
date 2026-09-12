@@ -65,7 +65,7 @@ export default function CursorGlow() {
 
       {/* Outer ring */}
       <motion.div
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full border border-purple-400/70"
+        className="custom-cursor-ring fixed top-0 left-0 z-[99999] pointer-events-none rounded-full border border-purple-400/70"
         style={{
           x: springX,
           y: springY,
@@ -84,7 +84,7 @@ export default function CursorGlow() {
 
       {/* Center dot */}
       <motion.div
-        className="fixed top-0 left-0 z-[100000] pointer-events-none rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400"
+        className="custom-cursor-dot fixed top-0 left-0 z-[100000] pointer-events-none rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400"
         style={{
           x: mouseX,
           y: mouseY,

@@ -25,7 +25,7 @@ export default function Navbar({ theme }) {
       {/* ================= HAMBURGER ================= */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed top-8 left-8 z-[2000] w-12 h-12 flex flex-col justify-center gap-[6px] group"
+        className="fixed top-5 left-5 sm:top-8 sm:left-8 z-[2000] w-12 h-12 flex flex-col justify-center gap-[6px] group"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
@@ -77,7 +77,7 @@ export default function Navbar({ theme }) {
             {/* CLOSE */}
             <motion.button
               onClick={() => setIsOpen(false)}
-              className="absolute top-8 left-8 w-10 h-10 z-10"
+              className="absolute top-5 left-5 sm:top-8 sm:left-8 w-10 h-10 z-10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -95,8 +95,8 @@ export default function Navbar({ theme }) {
             </motion.button>
 
             {/* CONTENT */}
-            <div className="h-full flex items-center pt-2">
-              <div className="w-full max-w-7xl mx-auto px-24 md:px-32 grid md:grid-cols-[1fr_300px] gap-20">
+            <div className="h-full flex items-start md:items-center pt-24 pb-20 md:pt-2 overflow-y-auto">
+              <div className="w-full max-w-7xl mx-auto px-16 sm:px-20 md:px-32 grid md:grid-cols-[1fr_300px] gap-20">
                 {/* NAVIGATION */}
                 <div>
                   <motion.p
@@ -125,7 +125,7 @@ export default function Navbar({ theme }) {
                         }}
                       >
                         <span
-                          className={`block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[6.2rem] leading-[0.9] tracking-[-0.04em] transition-all duration-300 group-hover:translate-x-4 ${
+                          className={`block font-serif text-4xl sm:text-5xl md:text-7xl lg:text-[6.2rem] leading-[0.9] tracking-[-0.04em] transition-all duration-300 group-hover:translate-x-4 ${
                             theme === "dark"
                               ? "text-white group-hover:text-white/50"
                               : "text-gray-900 group-hover:text-gray-900/50"

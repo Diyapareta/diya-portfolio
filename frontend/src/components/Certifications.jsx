@@ -2,6 +2,14 @@ import { motion } from "framer-motion";
 
 const certifications = [
   {
+    title: "SheCodes Full Stack Workshop 2026",
+    issuer: "Code for GovTech · IIIT-H",
+    description:
+      "Successfully contributed to live open-source projects as part of the SheCodes Full Stack Workshop 2026, gaining hands-on experience with collaborative software development.",
+    image: "/certificates/shecodes.png",
+    year: "2026",
+  },
+  {
     title: "Developing Front-End Apps with React",
     issuer: "Coursera",
     description:
@@ -34,6 +42,33 @@ const certifications = [
     description:
       "Selected as an open-source contributor and gained hands-on experience contributing to collaborative software projects using Git and GitHub.",
     image: "/certificates/ssoc.png",
+    year: "2026",
+  },
+
+  {
+    title: "Responsive Web Design",
+    issuer: "freeCodeCamp",
+    description:
+      "Successfully completed the Responsive Web Design Developer Certification, representing approximately 300 hours of coursework and projects.",
+    image: "/certificates/freecodecamp.png",
+    year: "2026",
+  },
+
+  {
+    title: "AWS Foundations: Getting Started with the AWS Cloud Essentials",
+    issuer: "Amazon Web Services (AWS)",
+    description:
+      "Completed AWS Foundations training covering fundamental AWS Cloud concepts and essential cloud services.",
+    image: "/certificates/awscloud.png",
+    year: "2026",
+  },
+
+  {
+    title: "Pandas",
+    issuer: "Kaggle",
+    description:
+      "Successfully completed the Pandas course, developing practical knowledge of data manipulation and analysis using Python and Pandas.",
+    image: "/certificates/pandas.png",
     year: "2026",
   },
 ];

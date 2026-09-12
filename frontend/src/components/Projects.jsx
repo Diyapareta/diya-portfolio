@@ -24,6 +24,7 @@ const projects = [
     image: "/projects/paradise.png",
     tech: ["React", "Redux Toolkit", "Supabase", "Vite"],
     github: "https://github.com/Diyapareta/paradise-nursery",
+    live: "https://paradise-nursery-pink.vercel.app/",
   },
 
   {
@@ -232,7 +233,7 @@ export default function Projects({ theme }) {
 
                   <p
                     className={`text-xs md:text-sm leading-relaxed max-w-xl line-clamp-2 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      theme === "dark" ? "!text-white/50" : "!text-gray-600"
                     }`}
                   >
                     {project.desc}
@@ -371,7 +372,7 @@ export default function Projects({ theme }) {
 
                   <p
                     className={`text-sm md:text-base leading-7 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      theme === "dark" ? "!text-white/70" : "!text-gray-600"
                     }`}
                   >
                     {activeProject.fullDesc}

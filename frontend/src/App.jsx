@@ -10,10 +10,13 @@ import Contact from "./components/Contact";
 import Navbar from "./components/Navbar";
 import Intro from "./components/Intro";
 import Certifications from "./components/Certifications";
+import Experience from "./components/Experience";
 import SectionTransition from "./components/SectionTransition";
 
 export default function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  });
   const [showIntro, setShowIntro] = useState(true);
 
   // Load saved theme
@@ -104,6 +107,10 @@ export default function App() {
 
         <SectionTransition theme={theme} variant="cyan">
           <Projects theme={theme} />
+        </SectionTransition>
+
+        <SectionTransition theme={theme} variant="blue">
+          <Experience theme={theme} />
         </SectionTransition>
 
         <SectionTransition theme={theme} variant="blue">
